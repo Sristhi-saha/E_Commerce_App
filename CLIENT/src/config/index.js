@@ -1,6 +1,6 @@
 export const registerFormControls = [
     {
-        name:"username",
+        name:"username1",
         label:"User Name",
         type:"text",
         placeholder:"Enter your user name",
