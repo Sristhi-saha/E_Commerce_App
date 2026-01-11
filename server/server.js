@@ -8,7 +8,7 @@ import connectDB from "./db/index.js";
 
 
 const adminProductsRouter = express.Router();
-const authRouter = express.Router();
+import authRouter from "./routes/auth/auth-routes.js";
 
 
 dotenv.config({
