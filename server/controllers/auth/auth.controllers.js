@@ -36,7 +36,7 @@ export const registerUser = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Some Error Occured'
+            message: error.message
         })
     }
 }
@@ -89,7 +89,7 @@ export const login = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Some Error Occured'
+            message: error.message
         })
     }
 }

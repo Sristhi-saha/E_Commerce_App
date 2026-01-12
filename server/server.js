@@ -14,6 +14,10 @@ import authRouter from "./routes/auth/auth-routes.js";
 dotenv.config({
     path: "./.env"
 })
+console.log('=== DEBUG INFO ===');
+console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
+console.log('MONGODB_URI value:', process.env.MONGODB_URI);
+console.log('==================');
 
 const app = express();
 const PORT = process.env.PORT || 5000
@@ -22,7 +26,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5175",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: [
         "Content-Type",
