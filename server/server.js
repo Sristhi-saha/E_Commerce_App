@@ -9,6 +9,7 @@ import connectDB from "./db/index.js";
 
 const adminProductsRouter = express.Router();
 import authRouter from "./routes/auth/auth-routes.js";
+import shopProductRouter from './routes/shop/products-routes.js'
 
 
 dotenv.config({
@@ -50,3 +51,4 @@ connectDB()
 
 app.use('/api/auth', authRouter);
 app.use('/api/admin/products', adminProductsRouter);
+app.use('/api/shop/products', shopProductRouter);
