@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import  {LoginFromControls}  from "../../config/index";
 import CommonForm from "../../components/common/form";
+import { useDispatch } from "react-redux";
+import { loginUserAction } from "@/store/auth-slice";
+import { toast } from "sonner"
 
 const AuthLogin = () => {
   const initialState = {
@@ -10,10 +13,21 @@ const AuthLogin = () => {
   };
 
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
 
   function onSubmit(e) {
     e.preventDefault();
     console.log(formData);
+
+    dispatch(loginUserAction(formData)).then(data=>{
+      if(data?.payload?.success){
+        console.log(data);
+        toast.success(data?.payload?.message || "Login successfully")
+      }else{
+        toast.error(data?.payload?.message || 'Some Error Occurred')
+      }
+    })
+
   }
 
   return (
