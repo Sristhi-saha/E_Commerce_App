@@ -119,7 +119,6 @@ export const authMiddleware = (req, res, next) => {
             message: 'Unauthorized Access'
         })
     }
-
     try {
         const decoded = jwt.verify(token, process.env.CLIENT_SECRET_KEY)
         req.user = decoded
