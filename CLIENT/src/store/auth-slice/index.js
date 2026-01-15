@@ -80,7 +80,7 @@ const authSlice = createSlice({
                 state.user = null;
                 state.isAuthenticated = false;
             })
-            // ✅ ADD THESE - Handle checkAuth
+            
             .addCase(checkAuthAction.pending, (state) => {
                 state.isLoading = true;
             })

@@ -1,3 +1,5 @@
+
+
 export const registerFormControls = [
     {
         name:"username",
@@ -43,3 +45,82 @@ export const LoginFromControls = [
 ]
 
 
+export const addProductsFromElements = [
+    {
+      "label": "Product Name",
+      "name": "productName",
+      "componentType": "input",
+      "type": "text",
+      "placeholder": "Enter product name"
+    },
+    {
+      "label": "Price",
+      "name": "price",
+      "componentType": "input",
+      "type": "number",
+      "placeholder": "0.00"
+    },
+    {
+      "label": "Category",
+      "name": "category",
+      "componentType": "select",
+      "type": "select",
+      "placeholder": "Select a category",
+      "options": [
+        { "value": "electronics", "label": "Electronics" },
+        { "value": "clothing", "label": "Clothing" },
+        { "value": "food", "label": "Food & Beverage" },
+        { "value": "home", "label": "Home & Garden" },
+        { "value": "sports", "label": "Sports & Outdoors" }
+      ]
+    },
+    {
+      "label": "Stock Quantity",
+      "name": "stock",
+      "componentType": "input",
+      "type": "number",
+      "placeholder": "Enter stock quantity"
+    },
+    {
+      "label": "Description",
+      "name": "description",
+      "componentType": "textarea",
+      "type": "textarea",
+      "placeholder": "Enter product description"
+    },
+    {
+      "label": "Brand",
+      "name": "brand",
+      "componentType": "input",
+      "type": "text",
+      "placeholder": "Enter brand name"
+    },
+    {
+      "label": "SKU",
+      "name": "sku",
+      "componentType": "input",
+      "type": "text",
+      "placeholder": "Enter SKU code"
+    },
+    {
+      "label": "In Stock",
+      "name": "inStock",
+      "componentType": "checkbox",
+      "type": "checkbox",
+      "placeholder": ""
+    },
+    {
+      "label": "Discount Percentage",
+      "name": "discount",
+      "componentType": "input",
+      "type": "number",
+      "placeholder": "Enter discount %"
+    },
+    {
+      "label": "Release Date",
+      "name": "releaseDate",
+      "componentType": "input",
+      "type": "date",
+      "placeholder": ""
+    }
+]

@@ -18,6 +18,7 @@ import Account from './pages/shopping-view/account.jsx'
 import Checkout from './pages/shopping-view/checkout.jsx'
 import CheckAuth from './components/common/check-auth.jsx'
 import UnAuthPages from './pages/unauth-pages/index.jsx'
+import { Skeleton } from "@/components/ui/skeleton"
 
 const App = () => {
   const { isAuthenticated, user, isLoading } = useSelector(state => state.auth)
@@ -28,17 +29,24 @@ const App = () => {
   }, [dispatch])
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>
+    return <div className="flex items-center space-x-4">
+      <Skeleton className="h-12 w-12 rounded-full" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[50px]" />
+        <Skeleton className="h-4 w-[600px]" />
+      </div>
+    </div>
   }
   
   return (
     <div className='flex flex-col overflow-hidden bg-white'>
-      <h1 className='text-2xl font-bold text-center mt-10'>E-Commerce Application</h1>
-      
       <Routes>
         <Route path="/auth" element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-            <AuthLayout />
+            <div>
+              <h1 className='text-2xl font-bold text-center mt-4'>E-Commerce Application</h1>
+              <AuthLayout />
+            </div>
           </CheckAuth>
         }>
           <Route path="login" element={<Authlogin />} />
@@ -58,7 +66,10 @@ const App = () => {
         
         <Route path='/shop' element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-            <ShoppingViewLayout />
+            <div>
+              <h1 className='text-2xl font-bold text-center mt-4'>E-Commerce Application</h1>
+              <ShoppingViewLayout />
+            </div>
           </CheckAuth>
         }>
           <Route path='home' element={<Home />} />
