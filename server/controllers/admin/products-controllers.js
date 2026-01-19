@@ -1,12 +1,28 @@
-import imageUploadUtil from '../../helpers/cloudinary.js';
+import {imageUploadUtil} from '../../helpers/cloudinary.js';
 
 //handleImageUpload fuction
-const handleImageUpload = async (req, res) => {
+export const handleImageUpload = async (req, res) => {
     try {
-        const b64 = Buffer.from(req.file.buffer).toString("base64");
-        const url = "data:" + req.file.mimetype + ";base64," + b64;
+        console.log("👉 Upload controller hit");
+
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "No file received",
+            });
+        }
+
+
+        const base64image = Buffer.from(req.file.buffer).toString("base64");
+        const url = "data:" + req.file.mimetype + ";base64," + base64image;
         const result = await imageUploadUtil(url)
 
+        console.log("✅ Cloudinary upload done");
+
+        return res.status(200).json({
+            success: true,
+            imageUrl: result.secure_url,
+        });
     } catch (error) {
         console.log(error);
         res.json({
@@ -30,6 +46,14 @@ const addProduct = async (req, res) => {
             totalStock,
         } = req.body;
 
+        // Basic validation
+        if (!title || !price || !category) {
+            return res.status(400).json({
+                success: false,
+                message: "Required fields are missing",
+            });
+        }
+
         const newlyCreatedProduct = new Product({
             image,
             title,
@@ -39,24 +63,25 @@ const addProduct = async (req, res) => {
             price,
             salePrice,
             totalStock,
-        })
+        });
 
         await newlyCreatedProduct.save();
+
         res.status(201).json({
             success: true,
-            message: 'Product added successfully',
+            message: "Product added successfully",
             data: newlyCreatedProduct,
-        })
-
+        });
 
     } catch (error) {
-        console.log(error);
+        console.error("Add Product Error:", error);
+
         res.status(500).json({
             success: false,
-            message: 'Adding product failed'
-        })
+            message: "Internal Server Error",
+        });
     }
-}
+};
 
 
 //Fetch all products
