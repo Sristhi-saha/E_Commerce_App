@@ -1,6 +1,8 @@
 import express from 'express';
 import productController from '../../controllers/admin/products-controllers.js';
-import upload from '../../helpers/cloudinary.js'
+import cloudinaryUtil from '../../helpers/cloudinary.js';
+
+const { imageUploadUtil , upload } = cloudinaryUtil;
 
 const {
   handleImageUpload,
@@ -18,4 +20,4 @@ router.get('/get', fetchAllProducts);
 router.put('/edit/:id', editProduct);
 router.delete('/delete/:id', deleteProduct);
 
-module.exports = router;
+export default router;

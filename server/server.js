@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 
-const adminProductsRouter = express.Router();
+import adminProductsRouter from "./routes/admin/products-routes.js";
 import authRouter from "./routes/auth/auth-routes.js";
 import shopProductRouter from './routes/shop/products-routes.js'
 

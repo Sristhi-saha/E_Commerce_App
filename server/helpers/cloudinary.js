@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 
@@ -11,9 +14,10 @@ cloudinary.config({
 
 const storage = multer.memoryStorage();
 
-async function imageUploadUtil(file) {
-    const result = await cloudinary.uploader.upload(file, {
-        resource_type: "auto",
+export async function imageUploadUtil(base64Image) {
+    const result = await cloudinary.uploader.upload(base64Image, {
+        folder: "products",
+        resource_type: "image",
     })
 
     return result;
