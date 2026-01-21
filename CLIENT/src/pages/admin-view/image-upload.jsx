@@ -3,8 +3,9 @@ import { useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
-function ProductImageUpload({imageFile,setImageFile,uploadedImageUrl,setUploadedImageUrl}){
+function ProductImageUpload({imageFile,setImageFile,setEdit,uploadedImageUrl,setUploadedImageUrl,imageLoading}){
 
     const inputRef = useRef(null);
 
@@ -55,13 +56,15 @@ function ProductImageUpload({imageFile,setImageFile,uploadedImageUrl,setUploaded
         <div className="w-full max-w-md mx-auto">
             <label className="lext-lg font-semibold mb-2 block">Upload Image</label>
             <div onDragOver={handleDragOver} onDrop={onhandledrop} className="border-2 border-dashed rounded-lg p-4 mt-4">
-                <Input type="file" id='image-upload' className="hidden"ref={inputRef} onChange={handleImageFileChange} />
+                <Input type="file" id='image-upload' className="hidden"ref={inputRef} disabled={setEdit} onChange={handleImageFileChange} />
                 {
                     !imageFile?
                     <label htmlFor="image-upload" className="flex flex-col items-center justify-center h-32 cursor-pointer">
                         <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2"/>
                         <span>Drag & drop or click to upload</span>
-                    </label>:<div className="flex items-center justify-between">
+                    </label>:
+                    imageLoading?<Skeleton className="h-10 bg-gray-200" />:(
+                    <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <FileIcon className="w-7 h-8 mr-2"/>
                         </div>
@@ -70,7 +73,7 @@ function ProductImageUpload({imageFile,setImageFile,uploadedImageUrl,setUploaded
                             <XIcon className="w-4 h-4"/>
                             <span className="sr-only">Remove File</span>
                         </button>
-                    </div>
+                    </div>)
                 }
             </div>
         </div>

@@ -1,20 +1,25 @@
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState={
     isLoading:false,
     productList:[]
 }
 
-export const addNewProduct = createAsyncThunk('/products/addnewProducts',async (FormData)=>{
-    const result = await axios.post('http://localhost:5000/api/admin/products/add',FormData,{
-        headers:{
-            'Content-Type':'application/json',
-        }
-    })
-    return result?.data;
-})
+export const addNewProduct = createAsyncThunk(
+  "products/addnewProducts",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/admin/products/add', data);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data.message);
+    }
+  }
+);
 
-export const fetchAllProduct = createAsyncThunk('/products/addnewProducts',async ()=>{
+
+export const fetchAllProduct = createAsyncThunk('/products/getProducts',async ()=>{
     const result = await axios.get('http://localhost:5000/api/admin/products/get')
     return result?.data;
 })
@@ -26,8 +31,8 @@ export const editAllProduct = createAsyncThunk('/products/editProduct',async ({F
     })
     return result?.data;
 })
-export const deleteProduct = createAsyncThunk('/products/addnewProducts',async (id)=>{
-    const result = await axios.delete(`http://localhost:5000/api/admin/products/delete/:${id}`)
+export const deleteProduct = createAsyncThunk('/products/deleteProducts',async (id)=>{
+    const result = await axios.delete(`http://localhost:5000/api/admin/products/delete/${id}`)
     return result?.data;
 })
 
@@ -36,21 +41,21 @@ const adminProductSlice = createSlice({
     name:'adminProducts',
     initialState,
     reducers:{},
-    extrabuilder: (builder)=>{
-        builder.addCase(fetchAllProduct.pending,(state)=>{
-            state.isLoading=true
-        }),
-        builder.addCase(fetchAllProduct.fulfilled,(state,action)=>{
-            console.log(action.payload);
-            state.isLoading=false,
-            state.productList=action.payload
-        }),
-        builder.addCase(fetchAllProduct.rejected,(state,action)=>{
-            console.log(action.payload);
-            state.isLoading=false,
-            state.productList=[]
-        })
-    }
+   extraReducers: (builder) => {
+  builder
+    .addCase(fetchAllProduct.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(fetchAllProduct.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.productList = action.payload.data;
+    })
+    .addCase(fetchAllProduct.rejected, (state) => {
+      state.isLoading = false;
+      state.productList = [];
+    });
+}
+
 });
 
-export default adminProductSlice;
+export default adminProductSlice.reducer;

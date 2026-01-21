@@ -48,7 +48,7 @@ export const LoginFromControls = [
 export const addProductsFromElements = [
     {
       "label": "Product Name",
-      "name": "productName",
+      "name": "title",
       "componentType": "input",
       "type": "text",
       "placeholder": "Enter product name"
@@ -76,7 +76,7 @@ export const addProductsFromElements = [
     },
     {
       "label": "Stock Quantity",
-      "name": "stock",
+      "name": "totalStock",
       "componentType": "input",
       "type": "number",
       "placeholder": "Enter stock quantity"
@@ -94,33 +94,5 @@ export const addProductsFromElements = [
       "componentType": "input",
       "type": "text",
       "placeholder": "Enter brand name"
-    },
-    {
-      "label": "SKU",
-      "name": "sku",
-      "componentType": "input",
-      "type": "text",
-      "placeholder": "Enter SKU code"
-    },
-    {
-      "label": "In Stock",
-      "name": "inStock",
-      "componentType": "checkbox",
-      "type": "checkbox",
-      "placeholder": ""
-    },
-    {
-      "label": "Discount Percentage",
-      "name": "discount",
-      "componentType": "input",
-      "type": "number",
-      "placeholder": "Enter discount %"
-    },
-    {
-      "label": "Release Date",
-      "name": "releaseDate",
-      "componentType": "input",
-      "type": "date",
-      "placeholder": ""
-    }
+    },    
 ]

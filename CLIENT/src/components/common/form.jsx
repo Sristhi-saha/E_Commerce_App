@@ -14,6 +14,7 @@ export default function CommonForm({
   formData,
   setFormData,
   onSubmit,
+  disabled,
   buttonText = "Submit",
 }) {
   function renderInputsByComponentType(controlItem) {
@@ -28,6 +29,7 @@ export default function CommonForm({
             name={controlItem.name}
             id={controlItem.name}
             value={value}
+            disabled={disabled}
             onChange={(e) =>
               setFormData({ ...formData, [controlItem.name]: e.target.value })
             }
@@ -38,6 +40,7 @@ export default function CommonForm({
         return (
           <Select
             value={value}
+            disabled={disabled}
             onValueChange={(val) =>
               setFormData({ ...formData, [controlItem.name]: val })
             }
@@ -62,6 +65,7 @@ export default function CommonForm({
             placeholder={controlItem.placeholder}
             name={controlItem.name}
             id={controlItem.name}
+            disabled={disabled}
             value={value}
             onChange={(e) =>
               setFormData({ ...formData, [controlItem.name]: e.target.value })
@@ -89,6 +93,7 @@ export default function CommonForm({
 
       <button
         type="submit"
+        disabled={disabled}
         className="mt-4 px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-950 transition-colors w-full"
       >
         {buttonText}

@@ -1,18 +1,9 @@
 import {imageUploadUtil} from '../../helpers/cloudinary.js';
+import Product from '../../models/Products.models.js'; // Add this import if missing
 
-//handleImageUpload fuction
+//handleImageUpload function
 export const handleImageUpload = async (req, res) => {
     try {
-<<<<<<< HEAD
-        const b64 = Buffer.from(req.file.buffer).toString("base64");
-        const url = "data:" + req.file.mimetype + ";base64," + b64;
-        const result = await imageUploadUtil(url);
-
-        res.json({
-            success:true,
-            result
-        })
-=======
         console.log("👉 Upload controller hit");
 
         if (!req.file) {
@@ -22,21 +13,20 @@ export const handleImageUpload = async (req, res) => {
             });
         }
 
-
-        const base64image = Buffer.from(req.file.buffer).toString("base64");
-        const url = "data:" + req.file.mimetype + ";base64," + base64image;
-        const result = await imageUploadUtil(url)
->>>>>>> bc128a93ffc03c70f4a3639343d811f105fcd005
+        const b64 = Buffer.from(req.file.buffer).toString("base64");
+        const url = "data:" + req.file.mimetype + ";base64," + b64;
+        const result = await imageUploadUtil(url);
 
         console.log("✅ Cloudinary upload done");
 
         return res.status(200).json({
             success: true,
+            result,
             imageUrl: result.secure_url,
         });
     } catch (error) {
         console.log(error);
-        res.json({
+        res.status(500).json({
             success: false,
             message: 'Image upload failed',
         })
@@ -56,6 +46,8 @@ const addProduct = async (req, res) => {
             salePrice,
             totalStock,
         } = req.body;
+
+        console.log(req.body);
 
         // Basic validation
         if (!title || !price || !category) {
@@ -135,23 +127,23 @@ const editProduct = async (req, res) => {
                 success: false,
                 message: 'Product not found'
             });
-
-            findProduct.title = title || findProduct.title;
-            findProduct.description = description || findProduct.description;
-            findProduct.category = category || findProduct.category;
-            findProduct.brand = brand || findProduct.brand;
-            findProduct.price = price === '' ? 0 : price || findProduct.price;
-            findProduct.salePrice = salePrice === '' ? 0 : salePrice || findProduct.salePrice;
-            findProduct.totalStock = totalStock || findProduct.totalStock;
-            findProduct.image = image || findProduct.image;
-
-            await findProduct.save();
-            res.status(200).json({
-                success: true,
-                message: 'Product edited successfully',
-                data: findProduct,
-            })
         }
+
+        findProduct.title = title || findProduct.title;
+        findProduct.description = description || findProduct.description;
+        findProduct.category = category || findProduct.category;
+        findProduct.brand = brand || findProduct.brand;
+        findProduct.price = price === '' ? 0 : price || findProduct.price;
+        findProduct.salePrice = salePrice === '' ? 0 : salePrice || findProduct.salePrice;
+        findProduct.totalStock = totalStock || findProduct.totalStock;
+        findProduct.image = image || findProduct.image;
+
+        await findProduct.save();
+        res.status(200).json({
+            success: true,
+            message: 'Product edited successfully',
+            data: findProduct,
+        })
     } catch (error) {
         console.log(error);
         res.status(500).json({
