@@ -12,6 +12,7 @@ import ProductImageUpload from "./image-upload";
 import {
   addNewProduct,
   fetchAllProduct,
+  editAllProduct,
 } from "@/store/admin/product-slice";
 import { toast } from "sonner";
 import AdminProductTile from "./product-tile";
@@ -30,41 +31,71 @@ const AdminProducts = () => {
   const dispatch = useDispatch();
   const { productList } = useSelector((state) => state.adminProducts);
 
-  const [openCreateProductDialog, setOpenCreateProductDialog] =
-    useState(false);
+  const [openCreateProductDialog, setOpenCreateProductDialog] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
   const [currentEditedID, setCurrentEditedID] = useState(null);
-    const [edit,setEdit] = useState(false);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState({
-    imageUrl: "",
-  });
+  const [edit, setEdit] = useState(false);
+  
+  // 1. Keep uploadedImageUrl consistently as a string or object
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
   useEffect(() => {
     dispatch(fetchAllProduct());
   }, [dispatch]);
 
+  // Helper to safely extract the string URL whether it's a string, object, or from formData
+  const getFinalImageUrl = () => {
+    if (typeof uploadedImageUrl === "string" && uploadedImageUrl.trim() !== "") {
+      return uploadedImageUrl;
+    }
+    if (uploadedImageUrl?.imageUrl) {
+      return uploadedImageUrl.imageUrl;
+    }
+    return formData?.image || "";
+  };
+
   function onSubmit(e) {
     e.preventDefault();
 
-    dispatch(
-      addNewProduct({
-        ...formData,
-        image: uploadedImageUrl.imageUrl,
-        id: currentEditedID, // backend decides add vs update
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchAllProduct());
-        toast.success(
-          currentEditedID
-            ? "Product updated successfully"
-            : "Product added successfully"
-        );
-        handleCloseSheet();
-      }
-    });
+    const imageUrl = getFinalImageUrl();
+
+    if (currentEditedID !== null) {
+      dispatch(
+        editAllProduct({
+           id: currentEditedID,
+           formData:{
+          ...formData,
+          image: imageUrl,
+           }
+         
+        })
+      ).then((data) => {
+        if (data?.payload?.success) {
+          dispatch(fetchAllProduct());
+          toast.success("Product updated successfully");
+          handleCloseSheet();
+        } else {
+          toast.error("Failed to update product");
+        }
+      });
+    } else {
+      dispatch(
+        addNewProduct({
+          ...formData,
+          image: imageUrl,
+        })
+      ).then((data) => {
+        if (data?.payload?.success) {
+          dispatch(fetchAllProduct());
+          toast.success("Product added successfully");
+          handleCloseSheet();
+        } else {
+          toast.error("Failed to add product");
+        }
+      });
+    }
   }
 
   function handleCloseSheet() {
@@ -72,7 +103,8 @@ const AdminProducts = () => {
     setCurrentEditedID(null);
     setFormData(initialFormData);
     setImageFile(null);
-    setUploadedImageUrl({ imageUrl: "" });
+    setUploadedImageUrl("");
+    setEdit(false);
   }
 
   return (
@@ -80,15 +112,16 @@ const AdminProducts = () => {
       {/* Add Product Button */}
       <button
         onClick={() => {
-          setEdit={setEdit}
+          setEdit(false); // ✅ Set to false when adding new
           setCurrentEditedID(null);
           setFormData(initialFormData);
-          setUploadedImageUrl({ imageUrl: "" });
+          setUploadedImageUrl("");
+          setImageFile(null);
           setOpenCreateProductDialog(true);
         }}
         className="bg-black text-white p-2 rounded font-bold"
       >
-        Add New Product
+        Add New Products
       </button>
 
       {/* Product Grid */}
@@ -96,7 +129,7 @@ const AdminProducts = () => {
         {productList?.length > 0 &&
           productList.map((product) => (
             <AdminProductTile
-              key={product.id}
+              key={product._id || product.id} // ✅ MongoDB uses _id
               product={product}
               setOpenCreateProductDialog={setOpenCreateProductDialog}
               setCurrentEditedID={setCurrentEditedID}
@@ -123,10 +156,12 @@ const AdminProducts = () => {
 
             <ProductImageUpload
               imageLoading={imageLoading}
+              setImageLoading={setImageLoading}
               imageFile={imageFile}
               setImageFile={setImageFile}
               uploadedImageUrl={uploadedImageUrl}
               setUploadedImageUrl={setUploadedImageUrl}
+              isEditMode={currentEditedID !== null}
               setEdit={setEdit}
             />
           </SheetHeader>
@@ -138,7 +173,7 @@ const AdminProducts = () => {
               formData={formData}
               setFormData={setFormData}
               formControls={addProductsFromElements}
-              disabled={!uploadedImageUrl.imageUrl}
+              isBtnDisabled={!getFinalImageUrl()} // ✅ Checks resolved URL
             />
           </div>
         </SheetContent>

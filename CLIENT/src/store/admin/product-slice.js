@@ -23,14 +23,21 @@ export const fetchAllProduct = createAsyncThunk('/products/getProducts',async ()
     const result = await axios.get('http://localhost:5000/api/admin/products/get')
     return result?.data;
 })
-export const editAllProduct = createAsyncThunk('/products/editProduct',async ({FormData,id})=>{
-    const result = await axios.put(`http://localhost:5000/api/admin/products/edit/:${id}`,FormData,{
-        headers:{
-            'Content-Type':'application/json',
-        }
-    })
+export const editAllProduct = createAsyncThunk(
+  "/products/editProduct",
+  async ({ id, formData }) => {
+    const result = await axios.put(
+      `http://localhost:5000/api/admin/products/edit/${id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return result?.data;
-})
+  }
+);
 export const deleteProduct = createAsyncThunk('/products/deleteProducts',async (id)=>{
     const result = await axios.delete(`http://localhost:5000/api/admin/products/delete/${id}`)
     return result?.data;

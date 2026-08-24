@@ -13,6 +13,7 @@ function AdminProductTile({
   setEdit
 }) {
   const dispatch = useDispatch();
+  console.log("products",product,"setcurrenteditedid",setCurrentEditedID)
 
 
   const deleteMethod = (product) => {
@@ -73,9 +74,9 @@ function AdminProductTile({
           className="bg-black text-white px-4 py-2 rounded font-bold"
           onClick={() => {
             setEdit(true)
-            setCurrentEditedID(product.id);
+            setCurrentEditedID(product._id);
             setFormData(product);
-            setUploadedImageUrl({ imageUrl: product.image });
+            setUploadedImageUrl(product.image);
             setOpenCreateProductDialog(true);
           }}
         >
