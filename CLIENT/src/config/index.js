@@ -61,6 +61,13 @@ export const addProductsFromElements = [
       "placeholder": "0.00"
     },
     {
+      "label": "Sale Price",
+      "name": "salePrice",
+      "componentType": "input",
+      "type": "number",
+      "placeholder": "0.00 (optional)"
+    },
+    {
       "label": "Category",
       "name": "category",
       "componentType": "select",

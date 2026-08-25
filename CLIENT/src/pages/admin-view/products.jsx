@@ -45,7 +45,6 @@ const AdminProducts = () => {
     dispatch(fetchAllProduct());
   }, [dispatch]);
 
-  // Helper to safely extract the string URL whether it's a string, object, or from formData
   const getFinalImageUrl = () => {
     if (typeof uploadedImageUrl === "string" && uploadedImageUrl.trim() !== "") {
       return uploadedImageUrl;
@@ -55,6 +54,20 @@ const AdminProducts = () => {
     }
     return formData?.image || "";
   };
+
+  function isFormValid() {
+    return [
+      "title",
+      "category",
+      "price",
+      "totalStock",
+    ].every(
+      (key) =>
+        formData[key] !== undefined &&
+        formData[key] !== null &&
+        formData[key].toString().trim() !== ""
+    );
+  }
 
   function onSubmit(e) {
     e.preventDefault();
@@ -173,7 +186,7 @@ const AdminProducts = () => {
               formData={formData}
               setFormData={setFormData}
               formControls={addProductsFromElements}
-              isBtnDisabled={!getFinalImageUrl()} // ✅ Checks resolved URL
+              isBtnDisabled={!isFormValid()}
             />
           </div>
         </SheetContent>

@@ -5,58 +5,85 @@ import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function ProductImageUpload({imageFile,setImageFile,setEdit,uploadedImageUrl,setUploadedImageUrl,imageLoading}){
+function ProductImageUpload({
+  imageFile,
+  setImageFile,
+  imageLoading,
+  setImageLoading,
+  uploadedImageUrl,
+  setUploadedImageUrl,
+  isEditMode,
+}) {
+  const inputRef = useRef(null);
 
-    const inputRef = useRef(null);
+  function handleImageFileChange(event) {
+    console.log(event.target.files);
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) setImageFile(selectedFile);
+  }
 
-    function handleImageFileChange(event){
-        console.log(event.target.files);
-        const selectedFile = event.target.files?.[0]
-        if(selectedFile) setImageFile(selectedFile)
+  function handleDragOver(event) {
+    event.preventDefault();
+  }
+
+  function onhandledrop(event) {
+    event.preventDefault();
+    const droppedFile = event.dataTransfer.files?.[0];
+
+    if (droppedFile) {
+      setImageFile(droppedFile);
     }
+  }
 
-    function handleDragOver(event){
-        event.preventDefault();
+  function handleRemoveImage() {
+    setImageFile(null);
+    if (inputRef.current) {
+      inputRef.current.value = "";
     }
+  }
 
-    function onhandledrop(event){
-        event.preventDefault();
-        const droppedFile= event.dataTransfer.files?.[0];
-
-        if(droppedFile){
-            setImageFile(droppedFile)
-        }
+  async function uploadImageToCloudinary() {
+    if (setImageLoading) setImageLoading(true);
+    try {
+      const data = new FormData();
+      data.append("my_file", imageFile);
+      const response = await axios.post(
+        "http://localhost:5000/api/admin/products/upload-image",
+        data
+      );
+      if (response) {
+        console.log(response);
+        setUploadedImageUrl(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      if (setImageLoading) setImageLoading(false);
     }
+  }
 
-    function handleRemoveImage(){
-        setImageFile(null);
-        if(inputRef.current){
-            inputRef.current.value='';
-        }
+  useEffect(() => {
+    if (imageFile !== null) {
+      uploadImageToCloudinary();
     }
+  }, [imageFile]);
 
-    async function uploadImageToCloudinary(){
-        const data = new FormData();
-        data.append('my_file',imageFile);
-        const response = await axios.post('http://localhost:5000/api/admin/products/upload-image',data)
-        if(response){
-            console.log(response);
-            setUploadedImageUrl(response.data)
-        }
-    }
-
-    useEffect(()=>{
-        if(imageFile!==null){
-            uploadImageToCloudinary()
-        }
-    },[imageFile])
-
-
-    return(
-        <div className="w-full max-w-md mx-auto">
-            <label className="lext-lg font-semibold mb-2 block">Upload Image</label>
-            <div onDragOver={handleDragOver} onDrop={onhandledrop} className="border-2 border-dashed rounded-lg p-4 mt-4">
-                <Input type="file" id='image-upload' className="hidden"ref={inputRef} disabled={setEdit} onChange={handleImageFileChange} />
+  return (
+    <div className="w-full max-w-md mx-auto">
+      <label className="text-lg font-semibold mb-2 block">Upload Image</label>
+      <div
+        onDragOver={handleDragOver}
+        onDrop={onhandledrop}
+        className="border-2 border-dashed rounded-lg p-4 mt-4"
+      >
+        <Input
+          type="file"
+          id="image-upload"
+          className="hidden"
+          ref={inputRef}
+          disabled={isEditMode}
+          onChange={handleImageFileChange}
+        />
                 {
                     !imageFile?
                     <label htmlFor="image-upload" className="flex flex-col items-center justify-center h-32 cursor-pointer">

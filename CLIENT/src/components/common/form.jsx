@@ -1,6 +1,6 @@
 import React from "react";
-import {Input} from "../ui/input";
-import {Textarea} from "../ui/textarea";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 import {
   Select,
   SelectContent,
@@ -10,54 +10,62 @@ import {
 } from "../ui/select";
 
 export default function CommonForm({
-  formControls = [], // Add default empty array here
-  formData,
+  formControls = [],
+  formData = {},
   setFormData,
   onSubmit,
-  disabled,
+  isBtnDisabled,
   buttonText = "Submit",
 }) {
   function renderInputsByComponentType(controlItem) {
-    const value = formData[controlItem.name] || "";
+    const rawValue = formData?.[controlItem.name];
 
     switch (controlItem.componentType) {
       case "input":
         return (
           <Input
-            type={controlItem.type}
+            type={controlItem.type || "text"}
             placeholder={controlItem.placeholder}
             name={controlItem.name}
             id={controlItem.name}
-            value={value}
-            disabled={disabled}
+            value={rawValue ?? ""}
             onChange={(e) =>
-              setFormData({ ...formData, [controlItem.name]: e.target.value })
+              setFormData((prev) => ({
+                ...prev,
+                [controlItem.name]: e.target.value,
+              }))
             }
           />
         );
 
-      case "select":
-        return (
-          <Select
-            value={value}
-            disabled={disabled}
-            onValueChange={(val) =>
-              setFormData({ ...formData, [controlItem.name]: val })
-            }
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder={controlItem.placeholder} />
-            </SelectTrigger>
+     case "select":
+  return (
+    <Select
+      value={formData?.[controlItem.name] || undefined}
+      onValueChange={(val) =>
+        setFormData((prev) => ({
+          ...prev,
+          [controlItem.name]: val,
+        }))
+      }
+    >
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder={controlItem.placeholder} />
+      </SelectTrigger>
 
-            <SelectContent>
-              {controlItem.options && controlItem.options.map((option, index) => ( 
-                <SelectItem key={index} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        );
+      <SelectContent>
+        {controlItem.options?.map((option, index) => (
+          <SelectItem
+            key={option.id || option.value || index}
+            value={option.id || option.value}
+          >
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+       
 
       case "textarea":
         return (
@@ -65,10 +73,12 @@ export default function CommonForm({
             placeholder={controlItem.placeholder}
             name={controlItem.name}
             id={controlItem.name}
-            disabled={disabled}
-            value={value}
+            value={rawValue ?? ""}
             onChange={(e) =>
-              setFormData({ ...formData, [controlItem.name]: e.target.value })
+              setFormData((prev) => ({
+                ...prev,
+                [controlItem.name]: e.target.value,
+              }))
             }
           />
         );
@@ -82,8 +92,8 @@ export default function CommonForm({
     <form onSubmit={onSubmit}>
       <div className="flex flex-col gap-4">
         {formControls.map((controlItem, index) => (
-          <div key={index} className="grid gap-1.5">
-            <label htmlFor={controlItem.name}>
+          <div key={controlItem.name || index} className="grid gap-1.5">
+            <label htmlFor={controlItem.name} className="text-sm font-medium">
               {controlItem.label}
             </label>
             {renderInputsByComponentType(controlItem)}
@@ -93,8 +103,8 @@ export default function CommonForm({
 
       <button
         type="submit"
-        disabled={disabled}
-        className="mt-4 px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-950 transition-colors w-full"
+        disabled={isBtnDisabled}
+        className="mt-4 px-4 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-950 disabled:opacity-50 disabled:cursor-not-allowed transition-colors w-full"
       >
         {buttonText}
       </button>
