@@ -67,7 +67,6 @@ const App = () => {
         <Route path='/shop' element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
             <div>
-              <h1 className='text-2xl font-bold text-center mt-4'>E-Commerce Application</h1>
               <ShoppingViewLayout />
             </div>
           </CheckAuth>

@@ -103,3 +103,39 @@ export const addProductsFromElements = [
       "placeholder": "Enter brand name"
     },    
 ]
+
+export const menuItemShoppingView = [
+  {
+    id:"home",
+    label:"Home",
+    path:"/shop/home"
+  },
+  {
+    id:"women",
+    label:"women",
+    path:"/shop/listing"
+  },
+  {
+    id:"footware",
+    label:"women",
+    path:"/shop/listing"
+  },
+  {
+    id:"accessories",
+    label:"women",
+    path:"/shop/listing"
+  },
+  {
+    id:"kids",
+    label:"kids",
+    path:"/shop/listing"
+  },
+  {
+    id:"men",
+    label:"men",
+    path:"/shop/listing"
+  },
+  {
+    
+  }
+]
