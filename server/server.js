@@ -1,20 +1,12 @@
+import "./config/env.js";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 
 import adminProductsRouter from "./routes/admin/products-routes.js";
 import authRouter from "./routes/auth/auth-routes.js";
 import shopProductRouter from './routes/shop/products-routes.js'
-
-dotenv.config({
-    path: "./.env"
-})
-console.log('=== DEBUG INFO ===');
-console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
-console.log('MONGODB_URI value:', process.env.MONGODB_URI);
-console.log('==================');
 
 const app = express();
 const PORT = process.env.PORT || 5000
