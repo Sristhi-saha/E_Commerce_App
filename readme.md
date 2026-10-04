@@ -391,8 +391,8 @@ Distributed under the MIT License. See `LICENSE` for details.
 ## 👤 Author
 
 **Your Name**
-- GitHub: [@your-username](https://github.com/sristhi-saha)
-- LinkedIn : [your-profile](https://linkedin.com/in/sristhi-saha)
+- GitHub: [@sristhi-saha](https://github.com/sristhi-saha)
+- LinkedIn: [sristhi-saha](https://linkedin.com/in/sristhi-saha)
 
 ---
 
