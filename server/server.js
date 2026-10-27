@@ -7,7 +7,7 @@ import connectDB from "./db/index.js";
 import adminProductsRouter from "./routes/admin/products-routes.js";
 import authRouter from "./routes/auth/auth-routes.js";
 import shopProductRouter from './routes/shop/products-routes.js'
-
+import cartRouter from './routes/shop/cart-routes.js';
 const app = express();
 const PORT = process.env.PORT || 5000
 
@@ -46,3 +46,4 @@ connectDB()
 app.use('/api/auth', authRouter);
 app.use('/api/admin/products', adminProductsRouter);
 app.use('/api/shop/products', shopProductRouter);
+app.use('/api/shop/carts',cartRouter);

@@ -37,7 +37,7 @@ const getFilteredProducts = async (req, res) => {
                 break;
         }
 
-        const products = await Product.find({filters}).sort(sort);
+        const products = await Product.find(filters).sort(sort);
         res.status(200).json({
             success: true,
             data: products

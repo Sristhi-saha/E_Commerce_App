@@ -38,6 +38,8 @@ export const registerUser = async (req, res) => {
             success: false,
             message: error.message
         })
+
+        console.log(error);
     }
 }
 
