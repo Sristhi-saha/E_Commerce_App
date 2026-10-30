@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛒 E-Commerce App
+# 🛒 Zenvora
 
 **A full-stack MERN e-commerce platform with a customer storefront and a powerful admin dashboard.**
 
